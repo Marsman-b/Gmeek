@@ -513,7 +513,7 @@ function toggleToc() {
             tocHTML += '</ol>'.repeat(currentLevel - level);
         }
 
-        tocHTML += `<li><a href="#${id}" onclick="smoothScroll('${id}')">${text}</a></li>`;
+        tocHTML += `<li><a href="#${id}" onclick="smoothScroll('${id}', event)">${text}</a></li>`;
         currentLevel = level;
     });
 
@@ -537,9 +537,9 @@ function toggleToc() {
     });
 })();
 
-function smoothScroll(id) {
-    event.preventDefault();
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+function smoothScroll(id, event) {
+    if (event) event.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 console.log(
