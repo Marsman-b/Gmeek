@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html data-color-mode="light"
+      data-dark-theme="{{ blogBase['nightTheme'] }}"
+      data-light-theme="{{ blogBase['dayTheme'] }}"
+      lang={% if blogBase['i18n']=='CN' %}"zh-CN"{% elif blogBase['i18n']=='RU' %}"ru"{% else %}"en"{% endif %}>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {{ blogBase['primerCSS'] }}
+    {{ blogBase['allHead'] }}
+
+    <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
+
+    {% if blogBase['themeMode']=='manual' %}
+    <script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+    {% endif %}
+
+    {% block head %}{% endblock %}
+</head>
+
+<style>
+/* ===== 原始样式 ===== */
+body{
+    box-sizing:border-box;
+    min-width:200px;
+    max-width:1400px;
+    margin:20px auto;
+    padding:45px;
+    font-size:16px;
+    font-family:sans-serif;
+    line-height:1.25;
+}
+
+#header{
+    display:flex;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--borderColor-muted, var(--color-border-muted));
+    margin-bottom:16px;
+}
+
+#footer{
+    margin-top:64px;
+    text-align:center;
+    font-size:small;
+}
+
+/* ========================= */
+/* 页面总体布局（新增） */
+/* ========================= */
+.layout-root{
+    display:flex;
+    gap:24px;
+}
+
+/* 左侧文章列表 */
+.post-list-sidebar{
+    width:260px;
+    flex-shrink:0;
+    position:sticky;
+    top:20px;
+    height:fit-content;
+    background:var(--color-canvas-subtle);
+    border:1px solid var(--borderColor-muted, var(--color-border-muted));
+    border-radius:10px;
+    padding:16px;
+}
+
+.post-list-title{
+    font-weight:600;
+    margin-bottom:12px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--borderColor-muted, var(--color-border-muted));
+}
+
+/* 文章列表 */
+.post-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.post-list li{
+    margin:6px 0;
+}
+
+.post-list a{
+    display:block;
+    padding:4px 6px;
+    font-size:14px;
+    text-decoration:none;
+    color:var(--color-fg-muted);
+    border-radius:6px;
+    line-height:1.4;
+}
+
+.post-list a:hover{
+    background:var(--color-neutral-muted);
+    color:var(--color-fg-default);
+}
+
+.post-list a.active{
+    background:var(--color-accent-subtle);
+    color:var(--color-accent-emphasis);
+    font-weight:500;
+}
+
+/* 主内容 */
+.main-area{
+    flex:1;
+    min-width:0;
+}
+
+/* 移动端抽屉 */
+.sidebar-toggle{
+    display:none;
+    position:fixed;
+    left:16px;
+    top:90px;
+    z-index:1000;
+    background:var(--color-btn-bg);
+    border:1px solid var(--borderColor-muted, var(--color-border-muted));
+    border-radius:6px;
+    padding:8px 10px;
+    cursor:pointer;
+}
+
+@media (max-width: 1000px){
+    body{
+        padding:20px 16px;
+    }
+
+    .layout-root{
+        display:block;
+    }
+
+    .post-list-sidebar{
+        position:fixed;
+        left:0;
+        top:0;
+        height:100vh;
+        width:280px;
+        transform:translateX(-100%);
+        transition:.3s;
+        z-index:999;
+        overflow-y:auto;
+    }
+
+    .post-list-sidebar.show{
+        transform:translateX(0);
+    }
+
+    .sidebar-toggle{
+        display:block;
+    }
+}
+</style>
+
+{% block style %}{% endblock %}
+
+<body>
+
+<button class="sidebar-toggle"
+        onclick="document.querySelector('.post-list-sidebar').classList.toggle('show')">
+☰ 文章
+</button>
+
+<div class="layout-root">
+
+    <!-- 左侧：文章列表 -->
+    <aside class="post-list-sidebar">
+        <div class="post-list-title">全部文章</div>
+
+        <ul class="post-list">
+        {% if blogBase['postList'] %}
+            {% for post in blogBase['postList'] %}
+            <li>
+                <a href="{{ post.url }}"
+                   class="{% if post.url == blogBase['postUrl'] %}active{% endif %}">
+                    {{ post.title }}
+                </a>
+            </li>
+            {% endfor %}
+        {% endif %}
+        </ul>
+    </aside>
+
+    <!-- 右侧正文 -->
+    <div class="main-area">
+        <div id="header">{% block header %}{% endblock %}</div>
+        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="footer">{% include 'footer.html' %}</div>
+    </div>
+
+</div>
+
+<script>
+var IconList={{ IconList }};
+var utterancesLoad=0;
+
+{% if blogBase['themeMode']=='manual' %}
+let themeSettings={
+    "dark":["dark","moon","#00f0ff","dark-blue"],
+    "light":["light","sun","#ff5000","github-light"],
+    "auto":["auto","sync","","preferred-color-scheme"]
+};
+
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+
+function modeSwitch(){
+    let current=document.documentElement.getAttribute("data-color-mode");
+    let next=current==="light"?"dark":current==="dark"?"auto":"light";
+    localStorage.setItem("meek_theme",next);
+    if(themeSettings[next]) changeTheme(...themeSettings[next]);
+}
+
+function utterancesTheme(theme){
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage({type:'set-theme',theme},'https://utteranc.es');
+}
+
+if(themeSettings[theme]){
+    changeTheme(...themeSettings[theme]);
+}
+{% endif %}
+
+console.log(
+"\n %c Gmeek {{ blogBase['GMEEK_VERSION'] }} https://github.com/Meekdai/Gmeek \n",
+"padding:5px 0;background:#02d81d;color:#fff"
+);
+
+(async function () {
+    const listEl = document.getElementById("postList");
+    if (!listEl) return;
+
+    // 常见 Gmeek 索引路径，逐个尝试
+    const candidates = [
+        "/post.json",
+        "/posts.json",
+        "/index.json",
+        "/feed.json"
+    ];
+
+    let posts = null;
+
+    for (const url of candidates) {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) continue;
+            const data = await res.json();
+
+            // Gmeek 常见格式兼容
+            if (Array.isArray(data)) {
+                posts = data;
+            } else if (data.posts) {
+                posts = data.posts;
+            } else if (data.items) {
+                posts = data.items;
+            }
+
+            if (posts && posts.length) break;
+        } catch (e) {}
+    }
+
+    if (!posts || !posts.length) {
+        console.warn("未找到文章列表 JSON");
+        return;
+    }
+
+    const current = location.pathname.replace(/\/$/, "");
+
+    posts.forEach(post => {
+        const url = post.url || post.link || post.path;
+        const title = post.title || post.name || "Untitled";
+
+        if (!url) return;
+
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+
+        a.href = url;
+        a.textContent = title;
+
+        if (current === url.replace(/\/$/, "")) {
+            a.classList.add("active");
+        }
+
+        li.appendChild(a);
+        listEl.appendChild(li);
+    });
+})();
+</script>
+
+{% block script %}{% endblock %}
+</html>

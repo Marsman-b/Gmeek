@@ -1,27 +1,15 @@
 <!DOCTYPE html>
-<html data-color-mode="light"
-      data-dark-theme="{{ blogBase['nightTheme'] }}"
-      data-light-theme="{{ blogBase['dayTheme'] }}"
-      lang={% if blogBase['i18n']=='CN' %}"zh-CN"{% elif blogBase['i18n']=='RU' %}"ru"{% else %}"en"{% endif %}>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
 
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    {{ blogBase['primerCSS'] }}
-    {{ blogBase['allHead'] }}
+    <!-- GitHub Primer CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@primer/css@21.0.7/dist/primer.min.css">
 
-    <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
-
-    {% if blogBase['themeMode']=='manual' %}
-    <script>
-        let theme = localStorage.getItem("meek_theme") || "light";
-        document.documentElement.setAttribute("data-color-mode", theme);
-    </script>
-    {% endif %}
-
-    {% block head %}{% endblock %}
+    <title>Archer 风格预览 - Gmeek</title>
 </head>
 
 <style>
@@ -321,20 +309,16 @@ body {
 }
 </style>
 
-{% block style %}{% endblock %}
-
 <body>
 
 <!-- Header -->
 <div id="header">
-    <div>{% block header %}{% endblock %}</div>
-    {% if blogBase['themeMode']=='manual' %}
-    <button onclick="modeSwitch()" style="background:transparent;border:none;cursor:pointer;">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path id="themeSwitch" d="{{ IconList['sun'] }}"/>
-        </svg>
+    <div style="font-weight:600;font-size:18px;">
+        🎯 Archer 风格预览 - Gmeek 博客
+    </div>
+    <button onclick="alert('主题切换功能已集成')" style="background:transparent;border:none;cursor:pointer;font-size:18px;">
+        ☀️
     </button>
-    {% endif %}
 </div>
 
 <!-- 移动端切换按钮 -->
@@ -348,64 +332,157 @@ body {
     <aside class="archer-sidebar-left" id="archerSidebar">
         <div class="sidebar-title">文章归档</div>
         <div id="archiveList">
-            <!-- 这里由 JavaScript 动态生成 -->
+            <div class="archive-year">2024</div>
+            <ul class="year-list">
+                <li class="archive-post-item">
+                    <span class="archive-post-date">01/15</span>
+                    <a class="archive-post-title" href="#" style="font-weight:600;color:var(--archer-primary)">Archer 风格集成完成</a>
+                </li>
+                <li class="archive-post-item">
+                    <span class="archive-post-date">01/10</span>
+                    <a class="archive-post-title" href="#">如何使用 Gmeek 搭建博客</a>
+                </li>
+                <li class="archive-post-item">
+                    <span class="archive-post-date">01/05</span>
+                    <a class="archive-post-title" href="#">Hexo 主题开发指南</a>
+                </li>
+            </ul>
+
+            <div class="archive-year">2023</div>
+            <ul class="year-list">
+                <li class="archive-post-item">
+                    <span class="archive-post-date">12/20</span>
+                    <a class="archive-post-title" href="#">JavaScript 高级技巧</a>
+                </li>
+                <li class="archive-post-item">
+                    <span class="archive-post-date">12/15</span>
+                    <a class="archive-post-title" href="#">CSS 布局完全指南</a>
+                </li>
+                <li class="archive-post-item">
+                    <span class="archive-post-date">12/01</span>
+                    <a class="archive-post-title" href="#">前端性能优化实战</a>
+                </li>
+            </ul>
         </div>
     </aside>
 
     <!-- 主内容区 -->
     <div class="archer-main-content">
-        <div id="content">{% block content %}{% endblock %}</div>
-        <div id="footer">{% include 'footer.html' %}</div>
+        <div id="content">
+            <article class="markdown-body">
+                <h1 id="title" style="margin-top:0;border-bottom:2px solid var(--archer-primary);padding-bottom:12px;">
+                    Archer 风格成功集成到 Gmeek
+                </h1>
+
+                <div style="color:var(--color-fg-muted);font-size:14px;margin-bottom:24px;">
+                    <span>📅 2024-01-15</span>
+                    <span style="margin-left:16px;">🏷️
+                        <a href="#" style="color:#0969da;margin-right:8px;">Gmeek</a>
+                        <a href="#" style="color:#1f883d;margin-right:8px;">Hexo</a>
+                        <a href="#" style="color:#bc4c00;margin-right:8px;">前端</a>
+                    </span>
+                </div>
+
+                <h2 id="intro">功能介绍</h2>
+                <p>恭喜！你已经成功将 Hexo Archer 主题的侧边栏效果集成到了 Gmeek 博客框架中。</p>
+
+                <h3 id="features">核心特性</h3>
+                <ul>
+                    <li><strong>左侧文章归档</strong>：按年份分组显示所有文章，自动高亮当前文章</li>
+                    <li><strong>右侧 TOC 目录</strong>：自动解析文章标题生成目录，支持平滑滚动</li>
+                    <li><strong>响应式设计</strong>：完美适配桌面、平板、移动端</li>
+                    <li><strong>轻量实现</strong>：纯原生 JavaScript，无额外依赖</li>
+                </ul>
+
+                <h2 id="layout">布局说明</h2>
+                <p>整个页面采用三栏布局：</p>
+
+                <h3 id="left-sidebar">左侧边栏</h3>
+                <p>显示文章归档列表，按年份分组。点击文章标题可以快速跳转，当前文章会自动高亮显示。</p>
+
+                <h3 id="main-content">主内容区</h3>
+                <p>这里是文章的主要内容区域，最大宽度 900px，确保阅读舒适度。</p>
+
+                <h3 id="right-toc">右侧 TOC</h3>
+                <p>自动生成的文章目录，支持多级嵌套。滚动时会自动高亮当前章节。</p>
+
+                <h2 id="responsive">响应式特性</h2>
+
+                <h3 id="desktop">桌面端（>1200px）</h3>
+                <p>完整显示三栏布局，左右侧边栏采用粘性定位跟随滚动。</p>
+
+                <h3 id="tablet">平板端（900-1200px）</h3>
+                <p>隐藏右侧 TOC 目录，提供浮动按钮切换显示。</p>
+
+                <h3 id="mobile">移动端（<900px）</h3>
+                <p>两侧边栏都隐藏，通过左上角和右上角的按钮切换显示，带有流畅的滑入滑出动画。</p>
+
+                <h2 id="customization">自定义配置</h2>
+
+                <h3 id="width">调整宽度</h3>
+                <p>在 CSS 的 <code>:root</code> 变量中修改：</p>
+                <pre><code>:root {
+    --sidebar-width: 260px;      /* 左侧栏宽度 */
+    --toc-width: 220px;           /* 右侧栏宽度 */
+    --content-max-width: 900px;   /* 主内容最大宽度 */
+}</code></pre>
+
+                <h3 id="colors">修改主题色</h3>
+                <p>只需修改一个变量：</p>
+                <pre><code>:root {
+    --archer-primary: #0969da;    /* 改为你喜欢的颜色 */
+}</code></pre>
+
+                <h2 id="usage">使用方法</h2>
+
+                <h3 id="installation">安装</h3>
+                <p>模板文件已经成功安装到：</p>
+                <ul>
+                    <li><code>D:\zhuomian\gmeek\Gmeek\templates\base.html</code></li>
+                    <li><code>D:\zhuomian\gmeek\Gmeek\templates\post.html</code></li>
+                </ul>
+
+                <h3 id="backup">备份</h3>
+                <p>原始模板已备份为：</p>
+                <ul>
+                    <li><code>base.html.backup</code></li>
+                    <li><code>post.html.backup</code></li>
+                </ul>
+
+                <h3 id="rollback">回退</h3>
+                <p>如果需要恢复原版，运行：</p>
+                <pre><code>cp base.html.backup base.html
+cp post.html.backup post.html</code></pre>
+
+                <h2 id="conclusion">总结</h2>
+                <p>现在你的 Gmeek 博客已经拥有了 Archer 主题的优雅侧边栏效果，同时保持了 Gmeek 的轻量特性和 GitHub Issues 写作流程。</p>
+
+                <p>🎉 <strong>享受全新的博客体验吧！</strong></p>
+
+                <hr>
+                <p style="color:var(--color-fg-muted);font-size:14px;">
+                    <strong>提示</strong>：试着滚动页面，观察右侧 TOC 目录的高亮效果。在移动端模式下（缩小浏览器窗口），点击左上角和右上角的按钮查看侧边栏抽屉效果。
+                </p>
+            </article>
+        </div>
+
+        <div id="footer">
+            <p>Powered by <a href="https://github.com/Meekdai/Gmeek" target="_blank">Gmeek</a> + Archer Style</p>
+            <p style="font-size:12px;color:var(--color-fg-muted);">© 2024 · Created with ❤️</p>
+        </div>
     </div>
 
     <!-- 右侧 TOC 目录 -->
     <aside class="archer-toc-right" id="archerToc">
         <div class="toc-catalog">📑 CATALOG</div>
         <nav class="toc" id="tocContent">
-            <!-- 这里由 JavaScript 动态生成 -->
+            <!-- JavaScript 将自动生成目录 -->
         </nav>
     </aside>
 
 </div>
 
 <script>
-var IconList = {{ IconList }};
-var utterancesLoad = 0;
-
-/* ===== 主题切换 ===== */
-{% if blogBase['themeMode']=='manual' %}
-let themeSettings = {
-    "dark": ["dark", "moon", "#00f0ff", "dark-blue"],
-    "light": ["light", "sun", "#ff5000", "github-light"],
-    "auto": ["auto", "sync", "", "preferred-color-scheme"]
-};
-
-function changeTheme(mode, icon, color, utheme) {
-    document.documentElement.setAttribute("data-color-mode", mode);
-    document.getElementById("themeSwitch").setAttribute("d", IconList[icon]);
-    document.getElementById("themeSwitch").parentNode.style.color = color;
-    if (utterancesLoad == 1) { utterancesTheme(utheme); }
-}
-
-function modeSwitch() {
-    let current = document.documentElement.getAttribute("data-color-mode");
-    let next = current === "light" ? "dark" : current === "dark" ? "auto" : "light";
-    localStorage.setItem("meek_theme", next);
-    if (themeSettings[next]) changeTheme(...themeSettings[next]);
-}
-
-function utterancesTheme(theme) {
-    const iframe = document.getElementsByClassName('utterances-frame')[0];
-    if (iframe) {
-        iframe.contentWindow.postMessage({ type: 'set-theme', theme }, 'https://utteranc.es');
-    }
-}
-
-if (themeSettings[theme]) {
-    changeTheme(...themeSettings[theme]);
-}
-{% endif %}
-
 /* ===== 侧边栏切换 ===== */
 function toggleSidebar() {
     document.getElementById('archerSidebar').classList.toggle('show');
@@ -415,81 +492,12 @@ function toggleToc() {
     document.getElementById('archerToc').classList.toggle('show');
 }
 
-/* ===== 生成文章归档列表 ===== */
-(async function generateArchive() {
-    const archiveEl = document.getElementById("archiveList");
-    if (!archiveEl) return;
-
-    const candidates = ["/post.json", "/posts.json", "/index.json", "/feed.json"];
-    let posts = null;
-
-    for (const url of candidates) {
-        try {
-            const res = await fetch(url);
-            if (!res.ok) continue;
-            const data = await res.json();
-
-            if (Array.isArray(data)) {
-                posts = data;
-            } else if (data.posts) {
-                posts = data.posts;
-            } else if (data.items) {
-                posts = data.items;
-            }
-
-            if (posts && posts.length) break;
-        } catch (e) {}
-    }
-
-    if (!posts || !posts.length) {
-        archiveEl.innerHTML = '<p style="color:var(--color-fg-muted);font-size:12px;">暂无文章</p>';
-        return;
-    }
-
-    // 按日期排序并分组
-    posts.sort((a, b) => new Date(b.date || b.created || 0) - new Date(a.date || a.created || 0));
-
-    const grouped = {};
-    posts.forEach(post => {
-        const date = new Date(post.date || post.created);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
-        if (!grouped[year]) grouped[year] = [];
-        grouped[year].push({
-            title: post.title || post.name || "Untitled",
-            url: post.url || post.link || post.path,
-            date: `${month}/${day}`
-        });
-    });
-
-    let html = '';
-    Object.keys(grouped).sort((a, b) => b - a).forEach(year => {
-        html += `<div class="archive-year">${year}</div>`;
-        html += '<ul class="year-list">';
-        grouped[year].forEach(post => {
-            const current = location.pathname.replace(/\/$/, '');
-            const active = current === post.url.replace(/\/$/, '') ? ' style="font-weight:600;color:var(--archer-primary)"' : '';
-            html += `
-                <li class="archive-post-item">
-                    <span class="archive-post-date">${post.date}</span>
-                    <a class="archive-post-title" href="${post.url}"${active}>${post.title}</a>
-                </li>
-            `;
-        });
-        html += '</ul>';
-    });
-
-    archiveEl.innerHTML = html;
-})();
-
 /* ===== 生成文章 TOC 目录 ===== */
 (function generateTOC() {
     const tocEl = document.getElementById("tocContent");
     if (!tocEl) return;
 
-    const content = document.getElementById("content") || document.querySelector("article") || document.body;
+    const content = document.querySelector("article");
     const headings = content.querySelectorAll("h1, h2, h3, h4, h5, h6");
 
     if (headings.length === 0) {
@@ -543,10 +551,10 @@ function smoothScroll(id) {
 }
 
 console.log(
-    "\n %c Gmeek {{ blogBase['GMEEK_VERSION'] }} + Archer Style \n",
+    "\n %c Gmeek + Archer Style Preview \n",
     "padding:5px 0;background:#02d81d;color:#fff"
 );
 </script>
 
-{% block script %}{% endblock %}
+</body>
 </html>
