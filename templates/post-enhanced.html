@@ -1,8 +1,17 @@
 {% extends "base-enhanced.html" %}
 
 {% block head %}
-<title>{{ postMsg['title'] }} - {{ blogBase['title'] }}</title>
-<meta name="description" content="{{ postMsg['body'][:150] if postMsg['body'] else '' }}">
+<meta name="description" content="{{ blogBase['description'] }}">
+<meta property="og:title" content="{{ blogBase['postTitle'] }}">
+<meta property="og:description" content="{{ blogBase['description'] }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ blogBase['postUrl'] }}">
+<meta property="og:image" content="{{ blogBase['ogImage'] }}">
+<title>{{ blogBase['postTitle'] }}</title>
+{% if blogBase['highlight']==1 %}
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+{% endif %}
+{{ blogBase['head'] }}
 {% endblock %}
 
 {% block header %}
@@ -13,41 +22,48 @@
 
 {% block content %}
 <article>
-    <h1 style="margin-top:0;border-bottom:2px solid var(--archer-primary);padding-bottom:12px;">
-        {{ postMsg['title'] }}
+    <h1 class="postTitle" style="margin-top:0;border-bottom:2px solid var(--archer-primary);padding-bottom:12px;">
+        {{ blogBase['postTitle'] }}
     </h1>
 
     <div style="color:var(--color-fg-muted);font-size:14px;margin-bottom:24px;">
-        <span>📅 {{ postMsg['created_at'][:10] }}</span>
-        {% if postMsg['labels'] %}
-        <span style="margin-left:16px;">🏷️
-            {% for label in postMsg['labels'] %}
-            <a href="{{ blogBase['homeUrl'] }}?tag={{ label['name'] }}"
-               style="color:{{ blogBase['labelColorDict'].get(label['name'], '#333') }};margin-right:8px;">
-                {{ label['name'] }}
-            </a>
-            {% endfor %}
-        </span>
+        <span>📅 {{ blogBase['createdAt'][:10] }}</span>
+        {% if blogBase['postLabel'] %}
+        <span style="margin-left:16px;">🏷️ {{ blogBase['postLabel'] }}</span>
         {% endif %}
     </div>
 
-    <div class="markdown-body">
-        {{ postMsg['body_html'] }}
+    <div id="postBody" class="markdown-body">
+        {{ blogBase['body'] }}
     </div>
 </article>
 
 {% if blogBase['needComment']==1 %}
-<div id="utterances-container" style="margin-top:48px;"></div>
+<div id="cmButton">
+    <span class="commenttext" onclick="cmButton()">{{ i18n["com_text"] }}</span>
+</div>
+<div id="comments"></div>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+{% if blogBase['needComment']==1 %}
 <script>
+function cmButton(){
+    var cmButton=document.getElementById("cmButton");
+    var comments=document.createElement("div");
+    comments.setAttribute("id","comments");
     var script = document.createElement('script');
-    script.src = "https://utteranc.es/client.js";
-    script.setAttribute("repo", "{{ blogBase['repo'] }}");
-    script.setAttribute("issue-term", "{{ postMsg['number'] }}");
-    script.setAttribute("theme", "github-light");
-    script.setAttribute("crossorigin", "anonymous");
-    script.setAttribute("async", "");
-    document.getElementById('utterances-container').appendChild(script);
-    utterancesLoad = 1;
+    script.src='https://utteranc.es/client.js';
+    script.setAttribute('repo','{{ blogBase["repo"] }}');
+    script.setAttribute('issue-term','{{ blogBase["postTitle"] }}');
+    script.setAttribute('theme','{{ blogBase["utterancesTheme"] }}');
+    script.setAttribute('crossorigin','anonymous');
+    script.async=true;
+    comments.appendChild(script);
+    cmButton.parentNode.replaceChild(comments,cmButton);
+    utterancesLoad=1;
+}
 </script>
 {% endif %}
 {% endblock %}
