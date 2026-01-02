@@ -26,15 +26,8 @@
         {{ blogBase['postTitle'] }}
     </h1>
 
-    <div style="color:var(--color-fg-muted);font-size:14px;margin-bottom:24px;">
-        <span>📅 {{ blogBase['createdAt'][:10] }}</span>
-        {% if blogBase['postLabel'] %}
-        <span style="margin-left:16px;">🏷️ {{ blogBase['postLabel'] }}</span>
-        {% endif %}
-    </div>
-
     <div id="postBody" class="markdown-body">
-        {{ blogBase['body'] }}
+        {{ blogBase['postBody'] }}
     </div>
 </article>
 
