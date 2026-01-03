@@ -1,27 +1,26 @@
 <!DOCTYPE html>
-<html data-color-mode="light"
-      data-dark-theme="{{ blogBase['nightTheme'] }}"
-      data-light-theme="{{ blogBase['dayTheme'] }}"
-      lang={% if blogBase['i18n']=='CN' %}"zh-CN"{% elif blogBase['i18n']=='RU' %}"ru"{% else %}"en"{% endif %}>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
 
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    {{ blogBase['primerCSS'] }}
-    {{ blogBase['allHead'] }}
+    <!-- Primer CSS -->
+    <link href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" rel="stylesheet" />
 
-    <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
+    <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg">
 
-    {% if blogBase['themeMode']=='manual' %}
+    <meta name="description" content="这是一篇测试文章">
+    <meta property="og:title" content="测试文章标题">
+    <meta property="og:description" content="这是一篇测试文章">
+    <meta property="og:type" content="article">
+    <title>测试文章标题 - Archer 风格预览</title>
+
     <script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-    {% endif %}
-
-    {% block head %}{% endblock %}
 </head>
 
 <style>
@@ -42,7 +41,7 @@ body {
     margin: 0;
     padding: 0;
     font-size: 16px;
-    font-family: sans-serif;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;
     line-height: 1.6;
 }
 
@@ -206,6 +205,17 @@ body {
     background: var(--color-canvas-default);
     padding: 24px;
     border-radius: 8px;
+}
+
+.postTitle {
+    margin-top: 0;
+    border-bottom: 2px solid var(--archer-primary);
+    padding-bottom: 12px;
+}
+
+#postBody {
+    border-bottom: 1px solid var(--color-border-default);
+    padding-bottom: 36px;
 }
 
 /* ========== 右侧 TOC 目录 ========== */
@@ -382,20 +392,20 @@ body {
 }
 </style>
 
-{% block style %}{% endblock %}
-
 <body>
 
 <!-- Header -->
 <div id="header">
-    <div>{% block header %}{% endblock %}</div>
-    {% if blogBase['themeMode']=='manual' %}
+    <div>
+        <a href="#" style="text-decoration:none;color:var(--color-fg-default);font-weight:600;font-size:18px;">
+            我的博客 - Archer 风格预览
+        </a>
+    </div>
     <button onclick="modeSwitch()" style="background:transparent;border:none;cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path id="themeSwitch" d="{{ IconList['sun'] }}"/>
+            <path id="themeSwitch" d="M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13z"/>
         </svg>
     </button>
-    {% endif %}
 </div>
 
 <!-- 移动端切换按钮 -->
@@ -412,63 +422,130 @@ body {
             <button class="sidebar-close-btn" onclick="toggleSidebar()" title="隐藏侧边栏">×</button>
         </div>
         <div id="archiveList">
-            <!-- 这里由 JavaScript 动态生成 -->
+            <div class="archive-year">2025</div>
+            <ul class="year-list">
+                <li class="archive-post-item">
+                    <span class="archive-post-date">01/03</span>
+                    <a class="archive-post-title" href="#" style="font-weight:600;color:var(--archer-primary)">测试文章标题</a>
+                </li>
+                <li class="archive-post-item">
+                    <span class="archive-post-date">01/02</span>
+                    <a class="archive-post-title" href="#">另一篇文章示例</a>
+                </li>
+                <li class="archive-post-item">
+                    <span class="archive-post-date">01/01</span>
+                    <a class="archive-post-title" href="#">新年第一篇文章</a>
+                </li>
+            </ul>
+            <div class="archive-year">2024</div>
+            <ul class="year-list">
+                <li class="archive-post-item">
+                    <span class="archive-post-date">12/31</span>
+                    <a class="archive-post-title" href="#">2024 年终总结</a>
+                </li>
+                <li class="archive-post-item">
+                    <span class="archive-post-date">12/25</span>
+                    <a class="archive-post-title" href="#">圣诞节特别文章</a>
+                </li>
+            </ul>
         </div>
     </aside>
 
     <!-- 主内容区 -->
     <div class="archer-main-content">
-        <div id="content">{% block content %}{% endblock %}</div>
-        <div id="footer">{% include 'footer.html' %}</div>
+        <div id="content">
+            <article>
+                <h1 class="postTitle">测试文章标题</h1>
+
+                <div id="postBody" class="markdown-body">
+                    <h2 id="section1">第一部分：介绍</h2>
+                    <p>这是一篇用于测试 Archer 风格三栏布局的示例文章。左侧是文章归档列表，中间是文章内容，右侧是文章目录（TOC）。</p>
+
+                    <h2 id="section2">第二部分：功能特性</h2>
+                    <p>这个布局具有以下特性：</p>
+                    <ul>
+                        <li>三栏响应式布局</li>
+                        <li>左侧文章归档按年份分组</li>
+                        <li>右侧自动生成的文章目录</li>
+                        <li>移动端自适应，支持侧边栏切换</li>
+                        <li>支持主题切换（亮色/暗色）</li>
+                    </ul>
+
+                    <h3 id="section2-1">2.1 左侧归档</h3>
+                    <p>左侧边栏显示所有文章，按年份和日期排序，当前文章会高亮显示。</p>
+
+                    <h3 id="section2-2">2.2 右侧目录</h3>
+                    <p>右侧边栏自动根据文章中的标题生成目录，支持点击跳转和滚动高亮。</p>
+
+                    <h2 id="section3">第三部分：技术实现</h2>
+                    <p>使用了以下技术：</p>
+                    <ul>
+                        <li>Jinja2 模板引擎</li>
+                        <li>Primer CSS 框架</li>
+                        <li>原生 JavaScript 实现交互</li>
+                        <li>CSS Grid 和 Flexbox 布局</li>
+                    </ul>
+
+                    <h2 id="section4">第四部分：代码示例</h2>
+                    <pre><code>// JavaScript 示例代码
+function smoothScroll(id, event) {
+    if (event) event.preventDefault();
+    document.getElementById(id)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+}</code></pre>
+
+                    <h2 id="section5">第五部分：总结</h2>
+                    <p>这个 Archer 风格的三栏布局为博客提供了更好的阅读体验和导航功能。用户可以方便地浏览文章归档，查看当前文章目录，并在不同主题之间切换。</p>
+                </div>
+            </article>
+        </div>
+        <div id="footer">
+            <span>© 2025 Powered by Gmeek + Archer Style</span>
+        </div>
     </div>
 
     <!-- 右侧 TOC 目录 -->
     <aside class="archer-toc-right" id="archerToc">
         <div class="toc-catalog">📑 CATALOG</div>
         <nav class="toc" id="tocContent">
-            <!-- 这里由 JavaScript 动态生成 -->
+            <!-- JavaScript 会动态生成目录 -->
         </nav>
     </aside>
 
 </div>
 
 <script>
-var IconList = {{ IconList }};
-var utterancesLoad = 0;
-
-/* ===== 主题切换 ===== */
-{% if blogBase['themeMode']=='manual' %}
-let themeSettings = {
-    "dark": ["dark", "moon", "#00f0ff", "dark-blue"],
-    "light": ["light", "sun", "#ff5000", "github-light"],
-    "auto": ["auto", "sync", "", "preferred-color-scheme"]
+var IconList = {
+    "sun": "M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8z",
+    "moon": "M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96"
 };
 
-function changeTheme(mode, icon, color, utheme) {
+/* ===== 主题切换 ===== */
+let themeSettings = {
+    "dark": ["dark", "moon", "#00f0ff"],
+    "light": ["light", "sun", "#ff5000"],
+    "auto": ["auto", "sync", ""]
+};
+
+function changeTheme(mode, icon, color) {
     document.documentElement.setAttribute("data-color-mode", mode);
     document.getElementById("themeSwitch").setAttribute("d", IconList[icon]);
     document.getElementById("themeSwitch").parentNode.style.color = color;
-    if (utterancesLoad == 1) { utterancesTheme(utheme); }
 }
 
 function modeSwitch() {
     let current = document.documentElement.getAttribute("data-color-mode");
-    let next = current === "light" ? "dark" : current === "dark" ? "auto" : "light";
+    let next = current === "light" ? "dark" : "light";
     localStorage.setItem("meek_theme", next);
     if (themeSettings[next]) changeTheme(...themeSettings[next]);
 }
 
-function utterancesTheme(theme) {
-    const iframe = document.getElementsByClassName('utterances-frame')[0];
-    if (iframe) {
-        iframe.contentWindow.postMessage({ type: 'set-theme', theme }, 'https://utteranc.es');
-    }
-}
-
+let theme = localStorage.getItem("meek_theme") || "light";
 if (themeSettings[theme]) {
     changeTheme(...themeSettings[theme]);
 }
-{% endif %}
 
 /* ===== 侧边栏切换 ===== */
 function toggleSidebar() {
@@ -485,82 +562,12 @@ function toggleToc() {
     document.getElementById('archerToc').classList.toggle('show');
 }
 
-/* ===== 生成文章归档列表 ===== */
-(async function generateArchive() {
-    const archiveEl = document.getElementById("archiveList");
-    if (!archiveEl) return;
-
-    try {
-        const res = await fetch("/postList.json");
-        if (!res.ok) {
-            archiveEl.innerHTML = '<p style="color:var(--color-fg-muted);font-size:12px;">暂无文章</p>';
-            return;
-        }
-
-        const data = await res.json();
-
-        // Gmeek postList.json 格式: {id: {postTitle, postUrl, ...}, ...}
-        // 移除 labelColorDict 并转换为数组
-        const posts = Object.entries(data)
-            .filter(([key]) => key !== 'labelColorDict')
-            .map(([id, post]) => ({
-                id,
-                title: post.postTitle || "Untitled",
-                url: post.postUrl || "",
-                // 从 URL 中提取日期，或使用当前日期
-                dateStr: post.postUrl || ""
-            }));
-
-        if (posts.length === 0) {
-            archiveEl.innerHTML = '<p style="color:var(--color-fg-muted);font-size:12px;">暂无文章</p>';
-            return;
-        }
-
-        // 按年份分组（由于没有日期字段，使用简单的列表）
-        const grouped = {};
-        const currentYear = new Date().getFullYear();
-
-        posts.forEach(post => {
-            // 默认使用当前年份，因为 postList.json 中没有日期字段
-            const year = currentYear;
-
-            if (!grouped[year]) grouped[year] = [];
-            grouped[year].push({
-                title: post.title,
-                url: post.url
-            });
-        });
-
-        let html = '';
-        Object.keys(grouped).sort((a, b) => b - a).forEach(year => {
-            html += `<div class="archive-year">${year}</div>`;
-            html += '<ul class="year-list">';
-            grouped[year].forEach(post => {
-                const currentPath = location.pathname.replace(/\/$/, '');
-                const postPath = '/' + post.url.replace(/^\//, '').replace(/\/$/, '');
-                const active = currentPath === postPath ? ' style="font-weight:600;color:var(--archer-primary)"' : '';
-                html += `
-                    <li class="archive-post-item">
-                        <a class="archive-post-title" href="/${post.url}"${active}>${post.title}</a>
-                    </li>
-                `;
-            });
-            html += '</ul>';
-        });
-
-        archiveEl.innerHTML = html;
-    } catch (e) {
-        console.error('Failed to load archive:', e);
-        archiveEl.innerHTML = '<p style="color:var(--color-fg-muted);font-size:12px;">加载失败</p>';
-    }
-})();
-
 /* ===== 生成文章 TOC 目录 ===== */
 (function generateTOC() {
     const tocEl = document.getElementById("tocContent");
     if (!tocEl) return;
 
-    const content = document.getElementById("content") || document.querySelector("article") || document.body;
+    const content = document.getElementById("postBody");
     const headings = content.querySelectorAll("h1, h2, h3, h4, h5, h6");
 
     if (headings.length === 0) {
@@ -614,10 +621,10 @@ function smoothScroll(id, event) {
 }
 
 console.log(
-    "\n %c Gmeek {{ blogBase['GMEEK_VERSION'] }} + Archer Style \n",
+    "\n %c Gmeek + Archer Style 预览 \n",
     "padding:5px 0;background:#02d81d;color:#fff"
 );
 </script>
 
-{% block script %}{% endblock %}
+</body>
 </html>
